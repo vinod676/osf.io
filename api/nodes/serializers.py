@@ -109,6 +109,8 @@ class NodeSerializer(JSONAPISerializer):
                                             'level project by submitting the appropriate fields in the request body, '
                                             'and some information will not change. By default, the description will '
                                             'be cleared and the project will be made private.')
+
+    current_user_can_comment = ser.SerializerMethodField(help_text='Whether the current user is allowed to post comments')
     current_user_permissions = ser.SerializerMethodField(help_text='List of strings representing the permissions '
                                                                    'for the current user on this node.')
 
@@ -225,6 +227,11 @@ class NodeSerializer(JSONAPISerializer):
         if not permissions:
             permissions = ['read']
         return permissions
+
+    def get_current_user_can_comment(self, obj):
+        user = self.context['request'].user
+        auth = Auth(user if not user.is_anonymous() else None)
+        return obj.can_comment(auth)
 
     class Meta:
         type_ = 'nodes'
@@ -533,7 +540,7 @@ class NodeContributorsSerializer(JSONAPISerializer):
         'permission'
     ])
 
-    id = ContributorIDField(read_only=True)
+    id = ContributorIDField(read_only=True, source='_id')
     type = TypeField()
 
     bibliographic = ser.BooleanField(help_text='Whether the user will be included in citations for this node or not.',
@@ -598,7 +605,7 @@ class NodeContributorDetailSerializer(NodeContributorsSerializer):
     """
     Overrides node contributor serializer to add additional methods
     """
-    id = ContributorIDField(required=True)
+    id = ContributorIDField(required=True, source='_id')
 
     def update(self, instance, validated_data):
         contributor = instance
