@@ -718,3 +718,14 @@ div.ball-scale-blue>div {
 .pv-darkbg .osf-box-lt {
     background-color: #a8bbc9
 }
+
+/* Make registrations modal scrollable and background hidden
+-------------------------------------------------- */
+
+.background-unscrollable {
+    overflow: hidden;
+}
+
+.modal-scrollable {
+    overflow: scroll;
+}

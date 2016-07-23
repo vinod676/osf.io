@@ -1,4 +1,5 @@
 <%inherit file="project/project_base.mako"/>
+
 <div id="alertBar"></div>
 
 ## Use full page width
@@ -220,7 +221,7 @@
       window.contextVars.file.urls.external = window.contextVars.file.extra.webView;
     </script>
 
-    <link href="/static/css/pages/file-view-page.css" rel="stylesheet">
+    <link href="/static/css/pages/file-view-page.css" rel="stylesheet" />
     <link href="${urls['mfr']}/static/css/mfr.css" media="all" rel="stylesheet" />
     <script src="${urls['mfr']}/static/js/mfr.js"></script>
 
